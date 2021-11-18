@@ -1,0 +1,3077 @@
+<channel version="3.9.1">
+  <id>6060b76d-07c2-4f9f-bc71-d2e8c44d8271</id>
+  <nextMetaDataId>27</nextMetaDataId>
+  <name>AthenaHealth - API integration</name>
+  <description></description>
+  <revision>1</revision>
+  <sourceConnector version="3.9.1">
+    <metaDataId>0</metaDataId>
+    <name>sourceConnector</name>
+    <properties class="com.mirth.connect.connectors.vm.VmReceiverProperties" version="3.9.1">
+      <pluginProperties/>
+      <sourceConnectorProperties version="3.9.1">
+        <responseVariable>Postprocessor</responseVariable>
+        <respondAfterProcessing>true</respondAfterProcessing>
+        <processBatch>false</processBatch>
+        <firstResponse>false</firstResponse>
+        <processingThreads>10</processingThreads>
+        <resourceIds class="linked-hash-map">
+          <entry>
+            <string>Default Resource</string>
+            <string>[Default Resource]</string>
+          </entry>
+        </resourceIds>
+        <queueBufferSize>1000</queueBufferSize>
+      </sourceConnectorProperties>
+    </properties>
+    <transformer version="3.9.1">
+      <elements/>
+      <inboundTemplate encoding="base64"></inboundTemplate>
+      <outboundTemplate encoding="base64"></outboundTemplate>
+      <inboundDataType>RAW</inboundDataType>
+      <outboundDataType>RAW</outboundDataType>
+      <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+          <splitType>JavaScript</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+      </inboundProperties>
+      <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+          <splitType>JavaScript</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+      </outboundProperties>
+    </transformer>
+    <filter version="3.9.1">
+      <elements/>
+    </filter>
+    <transportName>Channel Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <waitForPrevious>true</waitForPrevious>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector version="3.9.1">
+      <metaDataId>1</metaDataId>
+      <name>Retrieve order types</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var basePath = &apos;/configuration/ordertype&apos;;	
+var baseMap = Maps.map()
+				.add(&apos;path&apos;, basePath)
+				.add(&apos;practice_id&apos;, practiceID)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceChannelName&apos;, channelName)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+
+var remotePath = basePath + &apos;?searchterm=remote+monitoring&apos;;
+var remoteMap = Maps.map(baseMap).add(&apos;path&apos;, remotePath);
+var remoteRequest = new RawMessage(&apos;&apos;, [1], remoteMap);
+var remoteResult = router.routeMessageByChannelId(athenaChannel, remoteRequest);
+if (remoteResult.getStatus() != &apos;SENT&apos;) {
+	return remoteResult;
+}
+// var remoteData = JSON.parse(remoteResult.getMessage()).filter(item =&gt; item.;
+
+
+
+return remoteResult.getMessage();</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>2</metaDataId>
+      <name>Get signed off orders</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var botIntegrationChannel = globalMap.get(&apos;channel_athena_bot_integration&apos;);
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;org_id&apos;, orgID)
+			.add(&apos;org_uuid&apos;, orgUUID)
+			.add(&apos;practice_id&apos;, practiceID);
+
+// var path = &apos;/orders/changed?ordertype=OTHER&apos;;
+var path = &apos;/orders/signedoff&apos;;
+var requestMap = Maps.map(baseMap)
+				.add(&apos;path&apos;, path)
+
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+return router.routeMessageByChannelId(athenaChannel, request);
+
+/*
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return result;
+}
+
+var changedData = JSON.parse(result.getMessage());
+
+connectorMap.put(&apos;metadata_changed_count&apos;, changedData.totalcount.toString());
+
+for (var i = 0; i &lt;= changedData.orders.length - 1; i++) {
+	var orderRequestMap = Maps.map(baseMap);
+	var orderRequest = new RawMessage(JSON.stringify(changedData.orders[i]), [1], orderRequestMap);
+	var orderResult = router.routeMessageByChannelId(botIntegrationChannel, orderRequest);
+
+	if (!orderResult) {
+		// message filtered downstream
+		continue;
+	}
+	
+	if (orderResult.getStatus() != &apos;SENT&apos;) {
+		logger.error(&apos;failed to route changed order: &apos; + JSON.stringify(changedData.orders[i]));
+	}
+}
+
+return ResponseFactory.getSentResponse(result.getMessage());
+*/</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>3</metaDataId>
+      <name>Get patient by id</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var departmentID = sourceMap.get(&apos;department_id&apos;);
+var path = &apos;/patients/&apos; + patientID + &apos;?showinsurance=true&apos;;
+
+if (departmentID) {
+	path += &apos;&amp;departmentid=&apos; + departmentID.toString();
+}
+
+var requestMap = Maps.map()
+				.add(&apos;path&apos;, path)
+				.add(&apos;practice_id&apos;, practiceID)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceChannelName&apos;, channelName)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+				
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return result;
+}
+
+var resultData = JSON.parse(result.getMessage());
+if (resultData.length == 0) {
+	return &apos;&apos;;
+}
+return JSON.stringify(resultData[0]);</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>4</metaDataId>
+      <name>Get departments</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var path = &apos;/departments?showalldepartments=true&apos; ;
+var requestMap = Maps.map()
+				.add(&apos;path&apos;, path)
+				.add(&apos;practice_id&apos;, practiceID)
+				.add(&apos;org_id&apos;, orgID)
+				.add(&apos;org_uuid&apos;, orgUUID)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceChannelName&apos;, channelName)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+				
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return ResponseFactory.getErrorResponse(result.getMessage());
+}
+
+var resultData = JSON.parse(result.getMessage());
+if (resultData.length == 0) {
+	return &apos;&apos;;
+}
+
+return JSON.stringify(resultData);</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>5</metaDataId>
+      <name>Get providers</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var offset = sourceMap.get(&apos;offset&apos;);
+var limit = sourceMap.get(&apos;limit&apos;);
+var queryParams = sourceMap.get(&apos;queryParams&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);&#xd;
+
+var path = &apos;/providers&apos;;
+
+if (queryParams) {
+	path += queryParams;
+} else {
+	if (limit) {
+		path += &apos;?limit=&apos; + limit.toString();
+	}
+	if (offset) {
+		if (!limit) {
+			path += &apos;?offset=&apos; + offset.toString();
+		} else {
+			path += &apos;&amp;offset=&apos; + offset.toString();
+		}
+	}
+} 
+
+var requestMap = Maps.map()
+				.add(&apos;path&apos;, path)
+				.add(&apos;practice_id&apos;, practiceID)
+				.add(&apos;org_id&apos;, orgID)
+				.add(&apos;org_uuid&apos;, orgUUID)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceChannelName&apos;, channelName)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+				
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return result;
+}
+
+var resultData = JSON.parse(result.getMessage());
+if (resultData.length == 0) {
+	return &apos;&apos;;
+}
+
+return JSON.stringify(resultData);</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>6</metaDataId>
+      <name>Get provider schedule by date range</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var providerID = sourceMap.get(&apos;provider_id&apos;);
+var startDate = sourceMap.get(&apos;start_date&apos;);
+var endDate = sourceMap.get(&apos;end_date&apos;);
+
+if (!practiceID) {
+	return ResponseFactory.getErrorResponse(&apos;{ &quot;message&quot;: &quot;practice id not set&quot; }&apos;);
+}
+if (!startDate) {
+	return ResponseFactory.getErrorResponse(&apos;{ &quot;message&quot;: &quot;start date not set&quot; }&apos;);
+}
+if (!endDate) {
+	return ResponseFactory.getErrorResponse(&apos;{ &quot;message&quot;: &quot;end_date not set&quot; }&apos;);
+}
+
+var baseMap = Maps.map()
+				.add(&apos;org_id&apos;, orgID)
+				.add(&apos;org_uuid&apos;, orgUUID)
+				.add(&apos;practice_id&apos;, practiceID)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceChannelName&apos;, channelName)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+
+/**
+* Retrieve provider schedule from Athena API
+*/
+var pathTemplate = &apos;/appointments/booked?\
+			providerid=${provider_id}\
+			&amp;enddate=${end_date}\
+			&amp;startdate=${start_date}\
+			&amp;ignorerestrictions=false\
+			&amp;showcancelled=false\
+			&amp;showclaimdetail=false\
+			&amp;showcopay=true\
+			&amp;showinsurance=false\
+			&amp;showpatientdetail=true\
+			&amp;showremindercalldetail=false&apos;.replace(/\t/g, &apos;&apos;);
+
+var path = replacer.replaceValues(pathTemplate, { provider_id: providerID, end_date: endDate, start_date: startDate });
+
+var requestMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return result;
+}
+
+return result.getMessage();</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>8</metaDataId>
+      <name>Get practice info</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var path = &apos;/practiceinfo&apos;;
+
+var requestMap = Maps.map()
+				.add(&apos;path&apos;, path)
+				.add(&apos;org_id&apos;, orgID)
+				.add(&apos;org_uuid&apos;, orgUUID)
+				.add(&apos;practice_id&apos;, &apos;1&apos;)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+				
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return result;
+}
+
+return result.getMessage();</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>9</metaDataId>
+      <name>Get appointments changed</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var providers = JSON.parse(sourceMap.get(&apos;providers&apos;));
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var botIntegrationChannel = globalMap.get(&apos;channel_athena_bot_integration&apos;);
+var channelBotsDB = globalMap.get(&apos;channel_bots_db&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/appointments/changed?showpatientdetail=true&amp;leaveunprocessed=true&apos;
+
+if (providers.length &gt; 0) {
+//	path += &apos;&amp;providerid=&apos; + providers.join(&apos;,&apos;);
+}
+
+var appointmentsChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var appointmentsChangedRequest = new RawMessage(&apos;&apos;, [1], appointmentsChangedMap);
+return router.routeMessageByChannelId(athenaChannel, appointmentsChangedRequest);
+
+/*
+if (appointmentsChangedResponse.getStatus() != &apos;SENT&apos;) {
+	return appointmentsChangedResponse;
+}
+
+var changedData = JSON.parse(appointmentsChangedResponse.getMessage());
+
+connectorMap.put(&apos;metadata_changed_count&apos;, changedData.totalcount.toString());
+
+for (var i = 0; i &lt;= changedData.appointments.length - 1; i++) {
+	var appointment = changedData.appointments[i];
+
+	if (appointment.appointmentstatus == &apos;x&apos;) {
+		/// Cancel Appointment to DocsInk
+		var cancelAppointmentMap = Maps.map(baseMap);
+		var cancelAppointmentRequest = new RawMessage(JSON.stringify(appointment), [8], cancelAppointmentMap);
+		var cancelAppointmentResult = router.routeMessageByChannelId(botIntegrationChannel, cancelAppointmentRequest);
+		if (cancelAppointmentResult.getStatus() != &apos;SENT&apos;) {
+			logger.error(channelName + &apos;: failed to cancel appointment &apos; + appointment.appointmentid.toString());
+			// return cancelAppointmentResult;
+		}
+	} else {
+	
+		/// Upsert Patient to DocsInk
+		var upsertPatientMap = Maps.map(baseMap);
+		var upsertPatientRequest = new RawMessage(JSON.stringify(appointment.patient), [2], upsertPatientMap);
+		var upsertPatientResult = router.routeMessageByChannelId(botIntegrationChannel, upsertPatientRequest);
+		if (upsertPatientResult.getStatus() != &apos;SENT&apos;) {
+			logger.error(channelName + &apos;: failed to upsert patient&apos;);
+			continue;
+			// return upsertPatientResult;
+		}
+		
+		var docsinkPatient = JSON.parse(upsertPatientResult.getMessage());
+	
+		/// Upsert AppointmentType to DocsInk
+		var upsertAppointmentTypeMap = Maps.map(baseMap);
+		var upsertAppointmentTypeRequest = new RawMessage(JSON.stringify({ 
+			appointmenttypeid: appointment.appointmenttypeid, 
+			appointmenttype: appointment.appointmenttype
+		}), [3], upsertAppointmentTypeMap);
+		var upsertAppointmentTypeResult = router.routeMessageByChannelId(botIntegrationChannel, upsertAppointmentTypeRequest);
+		if (upsertAppointmentTypeResult.getStatus() != &apos;SENT&apos;) {
+			logger.error(channelName + &apos;: failed to upsert appointment type&apos;);
+			continue;
+			// return upsertAppointmentTypeResult;
+		}
+		
+		var docsinkAppointmentType = JSON.parse(upsertAppointmentTypeResult.getMessage());
+	
+		/// Upsert Appointment to DocsInk
+		var upsertAppointmentMap = Maps.map(baseMap);
+		var upsertAppointmentRequest = new RawMessage(JSON.stringify(appointment), [4], upsertAppointmentMap);
+		var upsertAppointmentResult = router.routeMessageByChannelId(botIntegrationChannel, upsertAppointmentRequest);
+		if (upsertAppointmentResult.getStatus() != &apos;SENT&apos;) {
+			logger.error(channelName + &apos;: failed to upsert appointment&apos;);
+			continue;
+		}
+	}
+}
+
+return appointmentsChangedResponse.getMessage();
+*/</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>10</metaDataId>
+      <name>Get patients changed</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var botIntegrationChannel = globalMap.get(&apos;channel_athena_bot_integration&apos;);
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;org_id&apos;, orgID)
+			.add(&apos;org_uuid&apos;, orgUUID)
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/patients/changed?leaveunprocessed=true&apos;;
+var patientsChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var patientsChangedRequest = new RawMessage(&apos;&apos;, [1], patientsChangedMap);
+var patientsChangedResponse = router.routeMessageByChannelId(athenaChannel, patientsChangedRequest);
+if (patientsChangedResponse.getStatus() != &apos;SENT&apos;) {
+	return patientsChangedResponse;
+}
+
+var changedData = JSON.parse(patientsChangedResponse.getMessage());
+
+connectorMap.put(&apos;metadata_changed_count&apos;, changedData.totalcount.toString());
+
+var patient;
+for (var i = 0; i &lt;= changedData.patients.length - 1; i++) {
+   try{
+	      patient = changedData.patients[i];
+	     var patientID = changedData.patients[i].patientid;
+		/**
+		* Get insurrance details by using athena&apos;s get patient by id  api
+		*/
+		var athenaPatientRequestMap = Maps.map(baseMap);
+		athenaPatientRequestMap.add(&apos;patient_id&apos;, patientID);
+		var athenaPatientRequest = new RawMessage(&apos;&apos;, [3], athenaPatientRequestMap);
+		var athenaPatientResponse = router.routeMessageByChannelId(channelId, athenaPatientRequest);
+		if (athenaPatientResponse.getStatus() != &apos;SENT&apos;) {
+			//throw athenaPatientResponse;
+			continue;
+		}
+		 changedData.patients[i] = athenaPatientResponse.getMessage();
+	}catch (err) {
+		logger.error(&apos;err&apos;+err);
+		continue;
+		}
+}
+return JSON.stringify(changedData);
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>11</metaDataId>
+      <name>Post Claims </name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var claimData = JSON.parse(connectorMessage.getEncodedData());
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var token = sourceMap.get(&apos;bot_token&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;org_uuid&apos;, orgUUID)
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/claims&apos;;
+if (!claimData.uuid) {	
+	// No UUID set for resource, assume create is intended
+	deleteNullKeys(claimData);
+	var createClaimMap = Maps.map(baseMap)
+						.add(&apos;bot_token&apos;, token)
+						.add(&apos;path&apos;, path)
+						.add(&apos;patientid&apos;, claimData.patientid)
+						.add(&apos;providerid&apos;, claimData.supervisingproviderid)
+						.add(&apos;departmentid&apos;, claimData.departmentid)
+						.add(&apos;claimcharges&apos;, JSON.stringify(claimData.claimcharges))
+						.add(&apos;servicedate&apos;, claimData.servicedate);
+						
+	var createClaimRequest = new RawMessage(&apos;&apos;, [2], createClaimMap);
+	return router.routeMessageByChannelId(athenaChannel, createClaimRequest); 
+} 
+
+function deleteNullKeys(data) {
+	var keys = Object.keys(data);	
+	for (i = 0; i &lt;= keys.length - 1; i++) {
+		if (data[keys[i]] == null) {
+			delete data[keys[i]];	
+		}
+	}
+}</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>12</metaDataId>
+      <name>Post changed data subscriptions</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;org_id&apos;, orgID)
+			.add(&apos;org_uuid&apos;, orgUUID)
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/patients/changed/subscription&apos;;
+var patientChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path);	
+var patientChangedRequest = new RawMessage(&apos;&apos;, [2], patientChangedMap);
+var patientChangedResponse = router.routeMessageByChannelId(athenaChannel, patientChangedRequest);
+if (patientChangedResponse.getStatus() != &apos;SENT&apos;) {
+	return patientChangedResponse;
+}
+
+var patientChangedData = JSON.parse(patientChangedResponse.getMessage());
+
+path = &apos;/appointments/changed/subscription&apos;;
+var appointmentChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)				
+var appointmentChangedRequest = new RawMessage(&apos;&apos;, [2], appointmentChangedMap);
+var appointmentChangedResponse = router.routeMessageByChannelId(athenaChannel, appointmentChangedRequest);
+if (appointmentChangedResponse.getStatus() != &apos;SENT&apos;) {
+	return appointmentChangedResponse;
+}
+
+var appointmentChangedData = JSON.parse(appointmentChangedResponse.getMessage());
+
+
+return JSON.stringify({ &quot;message&quot;: &quot;success&quot;});</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>13</metaDataId>
+      <name>Post Vitals</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var vitalData = JSON.parse(connectorMessage.getEncodedData());
+var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var token = sourceMap.get(&apos;bot_token&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;org_id&apos;, orgID)
+			.add(&apos;org_uuid&apos;, orgUUID)
+			.add(&apos;practice_id&apos;, practiceID);
+
+var pathTemplate = &apos;/chart/${patientid}/vitals&apos;.replace(/\t/g, &apos;&apos;);
+			
+var path = replacer.replaceValues(pathTemplate, { patientid: vitalData.patientid});
+if (!vitalData.uuid) {	
+if (vitalData.patientid) {	
+	// No UUID set for resource, assume create is intended
+	deleteNullKeys(vitalData);
+	var createVitalMap = Maps.map(baseMap)
+						.add(&apos;bot_token&apos;, token)
+						.add(&apos;path&apos;, path)
+						.add(&apos;departmentid&apos;, vitalData.departmentid)
+						.add(&apos;source&apos;, vitalData.source)
+						.add(&apos;vitals&apos;, JSON.stringify(vitalData.vitals));
+						
+	var createVitalRequest = new RawMessage(&apos;&apos;, [6], createVitalMap);
+	return router.routeMessageByChannelId(athenaChannel, createVitalRequest); 
+}
+} 
+
+function deleteNullKeys(data) {
+	var keys = Object.keys(data);	
+	for (i = 0; i &lt;= keys.length - 1; i++) {
+		if (data[keys[i]] == null) {
+			delete data[keys[i]];	
+		}
+	}
+}</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundTemplate encoding="base64"></inboundTemplate>
+        <outboundTemplate encoding="base64"></outboundTemplate>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>14</metaDataId>
+      <name>Get appointment types</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var path = &apos;/appointmenttypes&apos; ;
+var requestMap = Maps.map()
+				.add(&apos;path&apos;, path)
+				.add(&apos;practice_id&apos;, practiceID)
+				.add(&apos;org_id&apos;, orgID)
+				.add(&apos;org_uuid&apos;, orgUUID)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceChannelName&apos;, channelName)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+				
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return result;
+}
+
+var resultData = JSON.parse(result.getMessage());
+if (resultData.length == 0) {
+	return &apos;&apos;;
+}
+
+return JSON.stringify(resultData);</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>15</metaDataId>
+      <name>Post encounter document to chart</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var pdfData = connectorMessage.getEncodedData();
+var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var departmentID = sourceMap.get(&apos;department_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;org_id&apos;, orgID)
+			.add(&apos;org_uuid&apos;, orgUUID)
+			.add(&apos;practice_id&apos;, practiceID);
+
+var pathTemplate = &apos;/patients/${patientid}/documents/admin&apos;.replace(/\t/g, &apos;&apos;);
+			
+var path = replacer.replaceValues(pathTemplate, { patientid: patientID });
+
+var uploadDocumentMap = Maps.map(baseMap)
+					.add(&apos;path&apos;, path)
+					.add(&apos;departmentid&apos;, departmentID)
+					.add(&apos;documentsubclass&apos;, &apos;BILLING&apos;);
+						
+var uploadDocumentRequest = new RawMessage(connectorMessage.getEncodedData(), [7], uploadDocumentMap);
+return router.routeMessageByChannelId(athenaChannel, uploadDocumentRequest); </script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>16</metaDataId>
+      <name>Get languages</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+
+var path = &apos;/languages&apos; ;
+var requestMap = Maps.map()
+				.add(&apos;path&apos;, path)
+				.add(&apos;practice_id&apos;, practiceID)
+				.add(&apos;org_id&apos;, orgID)
+				.add(&apos;org_uuid&apos;, orgUUID)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceChannelName&apos;, channelName)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+				
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return ResponseFactory.getErrorResponse(result.getMessage());
+}
+
+var resultData = JSON.parse(result.getMessage());
+if (resultData.length == 0) {
+	return &apos;&apos;;
+}
+
+return JSON.stringify(resultData);</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>17</metaDataId>
+      <name>PUT/POST Patient</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var patientData = JSON.parse(connectorMessage.getRawData());
+var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var patient_id = sourceMap.get(&apos;athena_patient_id&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;org_id&apos;, orgID)
+			.add(&apos;org_uuid&apos;, orgUUID)
+			.add(&apos;practice_id&apos;, practiceID);
+
+
+
+if (patient_id != null) {
+	deleteNullKeys(patientData);
+	var pathTemplate = &apos;/patients/${patientid}&apos;.replace(/\t/g, &apos;&apos;);		
+	var path = replacer.replaceValues(pathTemplate, { patientid:patient_id});
+		
+	var createpatientMap = Maps.map(baseMap)
+						.add(&apos;path&apos;, path)
+						.add(&apos;source&apos;, patientData.source);
+												
+	var createpatientRequest = new RawMessage(JSON.stringify(patientData), [3], createpatientMap);
+	return router.routeMessageByChannelId(athenaChannel, createpatientRequest); 
+}else{
+	
+	deleteNullKeys(patientData);
+	var path = &apos;/patients&apos;.replace(/\t/g, &apos;&apos;);
+
+		var createpatientMap = Maps.map(baseMap)
+						.add(&apos;path&apos;, path)
+						.add(&apos;source&apos;, patientData.source);
+	var createpatientRequest = new RawMessage(JSON.stringify(patientData), [9], createpatientMap);
+	return router.routeMessageByChannelId(athenaChannel, createpatientRequest); 
+	}
+
+
+function deleteNullKeys(data) {
+	var keys = Object.keys(data);	
+	for (i = 0; i &lt;= keys.length - 1; i++) {
+		if (data[keys[i]] == null) {
+			delete data[keys[i]];	
+		}
+	}
+}
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>18</metaDataId>
+      <name>Get patients problem changed</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var providers = JSON.parse(sourceMap.get(&apos;providers&apos;));
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var botIntegrationChannel = globalMap.get(&apos;channel_athena_bot_integration&apos;);
+var channelBotsDB = globalMap.get(&apos;channel_bots_db&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/chart/healthhistory/problems/changed&apos;
+
+var problemsChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var problemsChangedRequest = new RawMessage(&apos;&apos;, [1], problemsChangedMap);
+return router.routeMessageByChannelId(athenaChannel, problemsChangedRequest);
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>19</metaDataId>
+      <name>Get patients medications changed</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var providers = JSON.parse(sourceMap.get(&apos;providers&apos;));
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var botIntegrationChannel = globalMap.get(&apos;channel_athena_bot_integration&apos;);
+var channelBotsDB = globalMap.get(&apos;channel_bots_db&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/chart/healthhistory/medication/changed&apos;
+
+
+var medicationsChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var medicationsChangedRequest = new RawMessage(&apos;&apos;, [1], medicationsChangedMap);
+return router.routeMessageByChannelId(athenaChannel, medicationsChangedRequest);
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>20</metaDataId>
+      <name>Get patients problem by patient ID</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var providers = JSON.parse(sourceMap.get(&apos;providers&apos;));
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var botIntegrationChannel = globalMap.get(&apos;channel_athena_bot_integration&apos;);
+var channelBotsDB = globalMap.get(&apos;channel_bots_db&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var departmentID = sourceMap.get(&apos;department_id&apos;);
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/chart/&apos; + patientID + &apos;/problems?showdiagnosisinfo=true&apos;;
+
+if (departmentID) {
+	path += &apos;&amp;departmentid=&apos; + departmentID.toString();
+}
+
+var problemsChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var problemsChangedRequest = new RawMessage(&apos;&apos;, [1], problemsChangedMap);
+return router.routeMessageByChannelId(athenaChannel, problemsChangedRequest);
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>21</metaDataId>
+      <name>Get patients medications by patient ID</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var channelBotsDB = globalMap.get(&apos;channel_bots_db&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var departmentID = sourceMap.get(&apos;department_id&apos;);
+
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;practice_id&apos;, practiceID);
+			
+var path = &apos;/chart/&apos; + patientID+ &apos;/medications?showrxnorm=true&apos; ;
+
+if (departmentID) {
+	path += &apos;&amp;departmentid=&apos; + departmentID.toString();
+}
+
+var medicationsChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var medicationsChangedRequest = new RawMessage(&apos;&apos;, [1], medicationsChangedMap);
+return router.routeMessageByChannelId(athenaChannel, medicationsChangedRequest);
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>false</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>22</metaDataId>
+      <name>PUT appointment confirmationstatus</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var appointmentData = JSON.parse(connectorMessage.getEncodedData());
+var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var appointment_id = sourceMap.get(&apos;athena_appointment_id&apos;).toString();
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;org_id&apos;, orgID)
+			.add(&apos;org_uuid&apos;, orgUUID)
+			.add(&apos;practice_id&apos;, practiceID);
+
+var pathTemplate = &apos;/appointments/${appointmentid}/confirmationstatus&apos;.replace(/\t/g, &apos;&apos;);
+			
+var path = replacer.replaceValues(pathTemplate, { appointmentid: appointment_id});
+	
+	
+if (appointment_id) {
+	deleteNullKeys(appointmentData);
+	var createappointmentMap = Maps.map(baseMap)
+						.add(&apos;path&apos;, path);
+												
+	var createappointmentRequest = new RawMessage(JSON.stringify(appointmentData), [3], createappointmentMap);
+	return router.routeMessageByChannelId(athenaChannel, createappointmentRequest); 
+}
+
+function deleteNullKeys(data) {
+	var keys = Object.keys(data);	
+	for (i = 0; i &lt;= keys.length - 1; i++) {
+		if (data[keys[i]] == null || keys[i]== &apos;patientid&apos;) {
+			delete data[keys[i]];	
+		}
+	}
+}
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>23</metaDataId>
+      <name>Get patient by demographics</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var patientData = JSON.parse(connectorMessage.getEncodedData());
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+
+
+var path = &apos;/patients/enhancedbestmatch&apos;;
+
+if (patientData.firstname ) {
+	path += &apos;?firstname=&apos; + patientData.firstname;
+}else if(!patientData.firstname || patientData.firstname ==&quot;&quot; ){
+	return  ResponseFactory.getErrorResponse(JSON.stringify({&apos;message&apos;:&apos;firstname is required field&apos;}));
+	}
+if (patientData.lastname) {
+	path += &apos;&amp;lastname=&apos; + patientData.lastname;
+}if(!patientData.lastname || patientData.lastname ==&quot;&quot; ){
+	 return ResponseFactory.getErrorResponse(JSON.stringify({&apos;message&apos;:&apos;lastname is required field&apos;}));
+	}
+if (patientData.email) {
+	path += &apos;&amp;email=&apos; + patientData.email;
+}
+if (patientData.dob) {
+	path += &apos;&amp;dob=&apos; + patientData.dob;
+}if(!patientData.dob || patientData.dob ==&quot;&quot; ){
+	return  ResponseFactory.getErrorResponse(JSON.stringify({&apos;message&apos;:&apos;dob is required field&apos;}));
+	}
+if (patientData.mobilephone) {
+	path += &apos;&amp;mobilephone=&apos; + patientData.mobilephone;
+}
+//if (patientData.departmentid) {
+//	path += &apos;&amp;departmentid=&apos; + patientData.departmentid;
+//}
+if (patientData.zip) {
+	path += &apos;&amp;zip=&apos; + patientData.zip;
+}
+
+
+	
+var requestMap = Maps.map()
+				.add(&apos;path&apos;, path)
+				.add(&apos;practice_id&apos;, practiceID)
+				.add(&apos;sourceChannelId&apos;, channelId)
+				.add(&apos;sourceChannelName&apos;, channelName)
+				.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+				
+var request = new RawMessage(&apos;&apos;, [1], requestMap);
+var result = router.routeMessageByChannelId(athenaChannel, request);
+if (result.getStatus() != &apos;SENT&apos;) {
+	return result;
+}
+
+var resultData = JSON.parse(result.getMessage());
+if (resultData.length == 0) {
+	return &apos;&apos;;
+}
+return JSON.stringify(resultData[0]);
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>24</metaDataId>
+      <name>Get surgical history</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var providers = JSON.parse(sourceMap.get(&apos;providers&apos;));
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var botIntegrationChannel = globalMap.get(&apos;channel_athena_bot_integration&apos;);
+var channelBotsDB = globalMap.get(&apos;channel_bots_db&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var departmentID = sourceMap.get(&apos;department_id&apos;);
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/chart/&apos; + patientID + &apos;/surgicalhistory?&apos;;
+
+if (departmentID) {
+	path += &apos;&amp;departmentid=&apos; + departmentID.toString();
+}
+
+var surgicalHistoryChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var surgicalHistoryChangedRequest = new RawMessage(&apos;&apos;, [1], surgicalHistoryChangedMap);
+return router.routeMessageByChannelId(athenaChannel, surgicalHistoryChangedRequest);
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
+    <connector version="3.9.1">
+      <metaDataId>26</metaDataId>
+      <name>Get patient allergies</name>
+      <properties class="com.mirth.connect.connectors.js.JavaScriptDispatcherProperties" version="3.9.1">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.9.1">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <script>var orgID = sourceMap.get(&apos;org_id&apos;);
+var orgUUID = sourceMap.get(&apos;org_uuid&apos;);
+var practiceID = sourceMap.get(&apos;practice_id&apos;);
+var providers = JSON.parse(sourceMap.get(&apos;providers&apos;));
+var athenaChannel = globalMap.get(&apos;channel_athena_api&apos;);
+var botIntegrationChannel = globalMap.get(&apos;channel_athena_bot_integration&apos;);
+var channelBotsDB = globalMap.get(&apos;channel_bots_db&apos;);
+var patientID = sourceMap.get(&apos;patient_id&apos;);
+var departmentID = sourceMap.get(&apos;department_id&apos;);
+var baseMap = Maps.map()
+			.add(&apos;sourceChannelId&apos;, channelId)
+			.add(&apos;sourceChannelName&apos;, channelName)
+			.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString())
+			.add(&apos;practice_id&apos;, practiceID);
+
+var path = &apos;/chart/&apos; + patientID + &apos;/allergies?&apos;;
+
+if (departmentID) {
+	path += &apos;&amp;departmentid=&apos; + departmentID.toString();
+}
+
+var allergiesChangedMap = Maps.map(baseMap).add(&apos;path&apos;, path)
+var allergiesChangedRequest = new RawMessage(&apos;&apos;, [1], allergiesChangedMap);
+return router.routeMessageByChannelId(athenaChannel, allergiesChangedRequest);
+</script>
+      </properties>
+      <transformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.9.1">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>RAW</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.9.1">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.9.1">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.9.1">
+        <elements/>
+      </filter>
+      <transportName>JavaScript Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
+  </destinationConnectors>
+  <preprocessingScript>// Modify the message variable below to pre process data
+
+var destinations = sourceMap.get(&apos;destinationSet&apos;);
+if (destinations.toArray().length &gt; 1) {
+	throw (&apos;message can only be assigned to a single destination&apos;);
+}
+
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+// Responses returned from here will be stored as &quot;Postprocessor&quot; in the response map
+
+var destinations = sourceMap.get(&apos;destinationSet&apos;);
+var metadataIds = destinations.toArray();
+
+if (metadataIds.length == 0) {
+	return ResponseFactory.getErrorResponse(&apos;invalid request&apos;);
+}
+
+var smsg = message.getConnectorMessages().get(0);
+if (smsg.getStatus() == &apos;ERROR&apos;) {
+	return smsg;
+}
+
+var metadataID = metadataIds[0];
+var cmsg = message.getConnectorMessages().get(metadataID);
+return cmsg.getResponseData();</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+
+globalMap.put(&apos;channel_athena_integration&apos;, channelId);
+
+return;</deployScript>
+  <undeployScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</undeployScript>
+  <properties version="3.9.1">
+    <clearGlobalChannelMap>true</clearGlobalChannelMap>
+    <messageStorageMode>PRODUCTION</messageStorageMode>
+    <encryptData>false</encryptData>
+    <removeContentOnCompletion>false</removeContentOnCompletion>
+    <removeOnlyFilteredOnCompletion>false</removeOnlyFilteredOnCompletion>
+    <removeAttachmentsOnCompletion>false</removeAttachmentsOnCompletion>
+    <initialState>STARTED</initialState>
+    <storeAttachments>true</storeAttachments>
+    <metaDataColumns>
+      <metaDataColumn>
+        <name>CHANGED_COUNT</name>
+        <type>STRING</type>
+        <mappingName>metadata_changed_count</mappingName>
+      </metaDataColumn>
+    </metaDataColumns>
+    <attachmentProperties version="3.9.1">
+      <type>None</type>
+      <properties/>
+    </attachmentProperties>
+    <resourceIds class="linked-hash-map">
+      <entry>
+        <string>Default Resource</string>
+        <string>[Default Resource]</string>
+      </entry>
+    </resourceIds>
+  </properties>
+  <exportData>
+    <metadata>
+      <enabled>true</enabled>
+      <lastModified>
+        <time>1634034260824</time>
+        <timezone>Asia/Kolkata</timezone>
+      </lastModified>
+      <pruningSettings>
+        <pruneMetaDataDays>30</pruneMetaDataDays>
+        <archiveEnabled>true</archiveEnabled>
+      </pruningSettings>
+    </metadata>
+    <codeTemplateLibraries>
+      <codeTemplateLibrary version="3.9.1">
+        <id>d316c4bc-9e10-4162-b67c-e514afc59fa3</id>
+        <name>Channel Helpers</name>
+        <revision>1</revision>
+        <lastModified>
+          <time>1636720334943</time>
+          <timezone>Asia/Kolkata</timezone>
+        </lastModified>
+        <description></description>
+        <includeNewChannels>true</includeNewChannels>
+        <enabledChannelIds>
+          <string>1aca2a66-a83a-4703-9ec7-dfaa3a6ad5b2</string>
+          <string>3e15b608-553f-45e7-a617-712d6b75ab4d</string>
+          <string>2f511815-92d1-4f0f-92e9-f4f8ae576b75</string>
+          <string>b4a51816-0aad-444a-b1ce-f5c11f9961bc</string>
+          <string>cb7f055d-45ae-43b7-ac7c-bb2b2db34ded</string>
+          <string>139cdc6a-5f40-46bd-a246-2a9a1ef8ed10</string>
+          <string>6ff8ca2b-c4e3-4e6f-897a-17f36ed63faa</string>
+          <string>27aee1c0-8ed0-4062-89b5-1c7a69a946bc</string>
+          <string>291b4847-a85d-41c6-bd4a-37f008b15ca8</string>
+          <string>81c836fd-cbba-4247-b438-d4c9987ee75b</string>
+          <string>0763b542-8ed8-4a30-9c35-de3dbf030626</string>
+          <string>75c150e0-fbc5-4eef-a856-bec6b3a39a24</string>
+          <string>dd55a671-a099-4b29-bdbb-85c34050037a</string>
+          <string>ae504043-55f5-497e-ac87-33686e7569b2</string>
+          <string>69f5ad2c-3bf4-4d55-8e4a-bd6faade202d</string>
+          <string>a8bd6f50-894f-443f-b248-da3ebad3a748</string>
+          <string>1e45f5ac-6815-40a8-8fe9-15e98eb1d07b</string>
+          <string>3d95de17-a2ea-446c-be4c-36c32d8cda1c</string>
+          <string>fdcb1121-0d49-4ed8-b1a1-4f4482e1c20a</string>
+          <string>8c5d3887-bd22-4018-aeda-45e5c0f8d551</string>
+          <string>a127fffb-1663-4206-b6d3-348aa228c999</string>
+          <string>143b10e0-e01b-4942-9995-2d3b9a165d76</string>
+          <string>6060b76d-07c2-4f9f-bc71-d2e8c44d8271</string>
+          <string>08536fee-6f99-4cc4-8958-f84daaee73d5</string>
+          <string>183b6833-a563-42cb-8d4d-cdcb740aef30</string>
+          <string>bd81709b-2ef0-4760-aba9-f455fb338f37</string>
+          <string>695c7ed6-252e-4229-83db-5571946a8b62</string>
+          <string>50dcf6de-46b4-4de5-99c2-d341abb8a41a</string>
+          <string>ed4ef090-3f7e-442d-ad30-744e3a1313f2</string>
+          <string>ed3e52dc-3023-4cc7-8cad-47e0d5df89c1</string>
+          <string>ec29c308-0bc3-4eb0-a948-09c2c0747afa</string>
+          <string>aeaba1c0-cef9-4ad8-82d7-76d66cc95562</string>
+          <string>2a33ffd6-253d-402f-8fb6-93bd94f65dcd</string>
+          <string>7445aaa5-ff13-4c08-a8b1-817cfed2692b</string>
+          <string>dcaf136d-a3b8-47ed-aec7-d1619675ba2d</string>
+          <string>90bc60ed-14c6-49db-b1e6-bb70d2b1d01d</string>
+          <string>7ee4a47d-bdf3-473d-9da9-3a62c41037b1</string>
+          <string>167ee803-661a-4e6e-ac6e-b84c057f7ca1</string>
+          <string>a40e7657-c37a-4fb6-aa79-48a2ea16709c</string>
+          <string>5d5e5835-8cd3-43af-ac82-ffe57439bfb5</string>
+          <string>ae961745-fe19-46bd-b240-c82888091366</string>
+          <string>68581957-7fba-421f-b063-941a804fcc46</string>
+          <string>0056a8aa-7aa5-4047-a693-21bac64470aa</string>
+          <string>2a637fa3-fb83-4666-abe0-c754924ff738</string>
+          <string>d448196a-4282-4d10-8c9a-7f1dfd19abea</string>
+          <string>05759809-cfbd-4546-8b71-fd28c2499763</string>
+          <string>881db416-1776-4ab6-a3ce-5065ed11cdb5</string>
+          <string>982b29a5-1743-4435-8842-9810e4e34926</string>
+          <string>1bff9775-2de8-4b51-bb6b-6aaa29c144bb</string>
+          <string>9316c229-da47-49f8-a2c0-398ba155d370</string>
+          <string>55ebb133-1e4d-4172-8718-301240e9518f</string>
+          <string>492a7c6c-4768-45e2-9f49-6c5488b0a2e5</string>
+          <string>14a2ad40-95bb-4ac9-a10e-d326537cc5a6</string>
+          <string>6aa39894-bc9b-448c-aac6-b6967a0ce243</string>
+          <string>4108a56a-b1a6-4d8c-9e8e-b065654860d0</string>
+          <string>bdb4241f-2858-49da-8d4e-2f1579679620</string>
+          <string>692365a7-9ec6-4c38-adee-672f4084adf3</string>
+          <string>3f433a3e-e46d-440a-82c1-5490ada6b54e</string>
+          <string>72471096-425b-4750-81a4-123fca2e302c</string>
+          <string>4a05dc00-9ad6-454a-b61b-ddd074bbb36c</string>
+          <string>9d1c136c-3c94-43c3-b0f8-1c1551ac6987</string>
+          <string>b2fdd8c2-f387-493b-ab35-e7e9e8ce056a</string>
+          <string>930a4c9e-b458-4edf-92ff-3be07d68c28d</string>
+          <string>0f0df6c9-1153-4e0b-800b-533492ba936c</string>
+          <string>455c536f-d3fb-4832-941e-ef230b683590</string>
+          <string>31b37e0b-cfbf-4787-b5d3-2082328fafd7</string>
+          <string>21e47d6b-9863-4045-82af-8941087a4da1</string>
+          <string>b3869a86-7d4f-4a10-b116-24b758a191b3</string>
+          <string>a6825055-e697-487f-9add-560ad9567a60</string>
+          <string>f7552865-32a0-4b5b-a5fd-9b0bddffddf9</string>
+          <string>9f2bcd3c-8a74-49f1-b910-aa05c509c9cb</string>
+          <string>bd270438-7262-47f8-8656-1baf51287078</string>
+          <string>61b10ef9-baef-45e2-b747-a0987d851033</string>
+          <string>aa5ba1e6-ab11-4a9a-a03c-e0fe58b49086</string>
+          <string>ec653b8b-7362-4167-98ff-3845c7560d11</string>
+          <string>25c5fbce-cb87-4ba9-a572-0be49242a0b2</string>
+          <string>13738349-4cc4-43de-9365-a27ead17b524</string>
+          <string>a43f7553-71de-41d3-aa16-93cc7a48bafc</string>
+          <string>e1900e14-c2a2-426e-86f0-971353d60cdd</string>
+          <string>99066deb-0d43-44f6-8823-b8cfe08e7185</string>
+          <string>aa30f2b5-64cf-4396-b098-efeecb2224f2</string>
+          <string>9fee4e0a-7a6d-4925-bc78-59df2c1f28af</string>
+          <string>57953b24-64cb-489d-9706-bf5dc1ef94ea</string>
+          <string>08955a01-dda6-468b-a8cf-73586fe7d99f</string>
+          <string>470c6c09-6850-4770-820c-bbfce54196bd</string>
+          <string>21a820f0-205a-4046-8c4a-3788daca4d05</string>
+          <string>9a44798a-871f-4402-9397-75241b18c6b0</string>
+          <string>8b61cf50-9d95-43dd-b6ab-474e2a1d2d76</string>
+          <string>4041500f-7768-4011-b273-13fe61a2ebd6</string>
+          <string>0e0f63c0-5b51-4626-9a50-c0e2f5f94d37</string>
+          <string>f836f593-4c61-49bd-be13-4cb3f9c6cffb</string>
+          <string>0fec52ca-be59-47c9-85b1-700dc3b3dc2e</string>
+          <string>4d75bdd7-6d1f-4db5-a7f8-4f63efa13197</string>
+          <string>53d49d46-bd95-4ce5-8f98-7685217fedbf</string>
+          <string>8c637e01-95b0-4b11-a28f-4518b7f8d1ae</string>
+          <string>7f5da166-70b8-48e0-9fa9-cf96fd867c30</string>
+        </enabledChannelIds>
+        <disabledChannelIds/>
+        <codeTemplates>
+          <codeTemplate version="3.9.1">
+            <id>bc768cd6-d735-40b1-9617-a3417481fe19</id>
+            <name>Convert CSV to JSON</name>
+            <revision>1</revision>
+            <lastModified>
+              <time>1636720335071</time>
+              <timezone>Asia/Kolkata</timezone>
+            </lastModified>
+            <contextSet>
+              <delegate>
+                <contextType>SOURCE_RECEIVER</contextType>
+                <contextType>CHANNEL_UNDEPLOY</contextType>
+                <contextType>CHANNEL_BATCH</contextType>
+                <contextType>GLOBAL_PREPROCESSOR</contextType>
+                <contextType>CHANNEL_DEPLOY</contextType>
+                <contextType>DESTINATION_DISPATCHER</contextType>
+                <contextType>CHANNEL_POSTPROCESSOR</contextType>
+                <contextType>GLOBAL_POSTPROCESSOR</contextType>
+                <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+                <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+                <contextType>GLOBAL_UNDEPLOY</contextType>
+                <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+                <contextType>GLOBAL_DEPLOY</contextType>
+                <contextType>CHANNEL_PREPROCESSOR</contextType>
+                <contextType>CHANNEL_ATTACHMENT</contextType>
+              </delegate>
+            </contextSet>
+            <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+              <type>FUNCTION</type>
+              <code>/**
+	Modify the description here. Modify the function name and parameters as needed. One function per
+	template is recommended; create a new code template for each new function.
+
+	@param {String} csv - CSV string with column headers
+	@return {String} return JSON object using column headers and field keys
+*/
+function convertCsvToJson(csv) {
+	var textXML = SerializerFactory.getSerializer(&apos;DELIMITED&apos;).toXML(csv);
+	var xml = new XML(textXML);
+	var dataItems = [];
+	for (var i = 1; i &lt;= xml[&apos;row&apos;].length() - 1; i++) {
+		var jsonData = {};
+		for (var j = 1; j &lt;= xml[&apos;row&apos;][0].children().length(); j++) {
+			var column = &apos;column&apos; + j.toString();
+			var header = xml[&apos;row&apos;][0][column].toString().replace(/\s/g, &apos;_&apos;).replace(/-/g, &apos;_&apos;).toLowerCase();
+			var value = xml[&apos;row&apos;][i][column].toString();
+			
+			jsonData[header] = value;
+			
+		}
+		dataItems.push(jsonData);
+	}
+
+	return JSON.stringify(dataItems);
+}</code>
+            </properties>
+          </codeTemplate>
+          <codeTemplate version="3.9.1">
+            <id>ff3df0b8-cfa2-4ec9-82ac-37c9e4830e0c</id>
+            <name>Generic - Send message to channel destination</name>
+            <revision>1</revision>
+            <lastModified>
+              <time>1636720335173</time>
+              <timezone>Asia/Kolkata</timezone>
+            </lastModified>
+            <contextSet>
+              <delegate>
+                <contextType>SOURCE_RECEIVER</contextType>
+                <contextType>CHANNEL_UNDEPLOY</contextType>
+                <contextType>CHANNEL_BATCH</contextType>
+                <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+                <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+                <contextType>CHANNEL_PREPROCESSOR</contextType>
+                <contextType>CHANNEL_DEPLOY</contextType>
+                <contextType>DESTINATION_DISPATCHER</contextType>
+                <contextType>CHANNEL_POSTPROCESSOR</contextType>
+                <contextType>CHANNEL_ATTACHMENT</contextType>
+                <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+              </delegate>
+            </contextSet>
+            <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+              <type>FUNCTION</type>
+              <code>/**
+	Modify the description here. Modify the function name and parameters as needed. One function per
+	template is recommended; create a new code template for each new function.
+
+	@param {String} arg1 - arg1 description
+	@return {String} return description
+*/
+function sendMessageToChannelDestination(channelID, destinationID, map, data) {
+	var msgMap;
+	var outData = {};
+	
+	if (!map) {
+		msgMap = Maps.map();
+	} else {
+		msgMap = Maps.map(map);
+	}
+
+	if (data == null || data == undefined) {
+		data = &apos;&apos;;
+	}
+
+	if (msgMap.get(&apos;sourceChannelId&apos;) == null) {
+		msgMap.add(&apos;sourceChannelId&apos;, channelId);
+	}
+	if (msgMap.get(&apos;sourceChannelName&apos;) == null) {
+		msgMap.add(&apos;sourceChannelName&apos;, channelName);
+	}
+
+	// Dirty way to handle connector message not being defined. Handles cases where this function 
+	// is used in a source js writer.
+	try {
+		if (msgMap.get(&apos;sourceMessageId&apos;) == null &amp;&amp; connectorMessage &amp;&amp; connectorMessage.getMessageId()) {
+			msgMap.add(&apos;sourceMessageId&apos;, connectorMessage.getMessageId().toString());
+		}
+	} catch(ex) {}
+
+	var msgRequest = new RawMessage(data, [destinationID], msgMap);
+	var msgResponse = router.routeMessageByChannelId(channelID, msgRequest);
+
+	if (msgResponse == null) {
+		// return;
+		throw ChannelUtil.getChannelName(channelID) + &apos;&quot; does not return a valid response object&apos;; 
+	}
+	if (msgResponse.getStatus() == null) {
+		throw ChannelUtil.getChannelName(channelID) + &apos;&quot; does not return a valid response object&apos;;
+	}
+
+	if (msgResponse.getStatus() == &apos;ERROR&apos;) {
+		throw msgResponse.getMessage();
+	}
+
+	return msgResponse.getMessage();
+	
+	
+	// var msgResponse;
+
+	/*
+	try {
+		msgResponse = router.routeMessageByChannelId(channelID, msgRequest);
+		outData.status = &apos;success&apos;;
+		outData.status_message = &apos;message successfully sent to channel&apos;;
+	} catch (ex) {
+		outData.status = &apos;error&apos;;
+		outData.status_message = ex.toString();
+		return outData;
+	}
+
+	if (msgResponse.getStatus() == null) {
+		outData.response_status = &apos;unknown&apos;;
+		logger.error(&apos;Code Template &quot;Send message to channel by id&quot;: channel &quot;&apos; + ChannelUtil.getChannelName(channelID) + &apos;&quot; does not return a valid response object&apos;);
+	}
+	
+	switch (String(msgResponse.getStatus())) {
+		case &apos;ERROR&apos;:
+			outData.response_status = &apos;error&apos;;
+			break;
+		case &apos;FILTERED&apos;:
+			outData.response_status = &apos;filtered&apos;;
+			break;
+		case &apos;QUEUED&apos;:
+			outData.response_status = &apos;queued&apos;;
+			break;
+		case &apos;RECEIVED&apos;:
+			outData.response_status = &apos;received&apos;;
+			break;
+		case &apos;SENT&apos;:
+			outData.response_status = &apos;sent&apos;;
+			break;
+	}
+
+	outData.response_message = msgResponse.getMessage();
+
+	return outData;
+	*/
+}</code>
+            </properties>
+          </codeTemplate>
+          <codeTemplate version="3.9.1">
+            <id>f4cd9e71-4f8d-4472-80a9-31b533f4d578</id>
+            <name>Get bots DB connection to specified environment</name>
+            <revision>1</revision>
+            <lastModified>
+              <time>1636720335017</time>
+              <timezone>Asia/Kolkata</timezone>
+            </lastModified>
+            <contextSet>
+              <delegate>
+                <contextType>SOURCE_RECEIVER</contextType>
+                <contextType>CHANNEL_UNDEPLOY</contextType>
+                <contextType>CHANNEL_BATCH</contextType>
+                <contextType>GLOBAL_PREPROCESSOR</contextType>
+                <contextType>CHANNEL_DEPLOY</contextType>
+                <contextType>DESTINATION_DISPATCHER</contextType>
+                <contextType>CHANNEL_POSTPROCESSOR</contextType>
+                <contextType>GLOBAL_POSTPROCESSOR</contextType>
+                <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+                <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+                <contextType>GLOBAL_UNDEPLOY</contextType>
+                <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+                <contextType>GLOBAL_DEPLOY</contextType>
+                <contextType>CHANNEL_PREPROCESSOR</contextType>
+                <contextType>CHANNEL_ATTACHMENT</contextType>
+              </delegate>
+            </contextSet>
+            <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+              <type>FUNCTION</type>
+              <code>/**
+	Get a new bots database connection. Be sure to wrap in try/finally block to close database connection.
+
+	@param {String} environment - prod, staging, dev, local
+	@return {String} return database connection
+*/
+function GetBotsDBConnection() {
+	var username = configurationMap.get(&apos;bots-db-user&apos;);
+	var password = configurationMap.get(&apos;bots-db-pass&apos;);
+	var uri = configurationMap.get(&apos;bots-db-uri&apos;);	
+	return DatabaseConnectionFactory.createDatabaseConnection(&apos;org.postgresql.Driver&apos;, uri, username, password);
+}</code>
+            </properties>
+          </codeTemplate>
+          <codeTemplate version="3.9.1">
+            <id>554bd282-172b-43a0-8902-992baf63b04d</id>
+            <name>Get DB connection to specified environment</name>
+            <revision>1</revision>
+            <lastModified>
+              <time>1636720335113</time>
+              <timezone>Asia/Kolkata</timezone>
+            </lastModified>
+            <contextSet>
+              <delegate>
+                <contextType>SOURCE_RECEIVER</contextType>
+                <contextType>CHANNEL_UNDEPLOY</contextType>
+                <contextType>CHANNEL_BATCH</contextType>
+                <contextType>GLOBAL_PREPROCESSOR</contextType>
+                <contextType>CHANNEL_DEPLOY</contextType>
+                <contextType>DESTINATION_DISPATCHER</contextType>
+                <contextType>CHANNEL_POSTPROCESSOR</contextType>
+                <contextType>GLOBAL_POSTPROCESSOR</contextType>
+                <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+                <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+                <contextType>GLOBAL_UNDEPLOY</contextType>
+                <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+                <contextType>GLOBAL_DEPLOY</contextType>
+                <contextType>CHANNEL_PREPROCESSOR</contextType>
+                <contextType>CHANNEL_ATTACHMENT</contextType>
+              </delegate>
+            </contextSet>
+            <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+              <type>FUNCTION</type>
+              <code>/**
+	Get a new database connection. 
+
+	@param {String} arg1 - arg1 description
+	@return {String} return description
+*/
+function GetDBConnection(environment) {
+	if (environment != &apos;prod&apos; &amp;&amp; environment != &apos;staging&apos; &amp;&amp; environment != &apos;dev&apos; &amp;&amp; environment != &apos;local&apos;) {
+		return null;
+	}
+	
+	var username = configurationMap.get(&apos;docsink-db-user-&apos; + environment);
+	var password = configurationMap.get(&apos;docsink-db-pass-&apos; + environment);
+	var uri = configurationMap.get(&apos;docsink-db-uri-&apos; + environment);
+
+	return DatabaseConnectionFactory.createDatabaseConnection(&apos;com.mysql.cj.jdbc.Driver&apos;, uri, username, password);
+}</code>
+            </properties>
+          </codeTemplate>
+          <codeTemplate version="3.9.1">
+            <id>552a87ed-b5a0-4546-9e5c-0a768661a351</id>
+            <name>Postprocessor - Generate channel response</name>
+            <revision>1</revision>
+            <lastModified>
+              <time>1636720334961</time>
+              <timezone>Asia/Kolkata</timezone>
+            </lastModified>
+            <contextSet>
+              <delegate>
+                <contextType>CHANNEL_POSTPROCESSOR</contextType>
+              </delegate>
+            </contextSet>
+            <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+              <type>FUNCTION</type>
+              <code>/**
+	Modify the description here. Modify the function name and parameters as needed. One function per
+	template is recommended; create a new code template for each new function.
+
+	@param {String} arg1 - arg1 description
+	@return {String} return description
+*/
+function generateChannelResponse() {
+	// This script executes once after a message has been processed
+	// Responses returned from here will be stored as &quot;Postprocessor&quot; in the response map
+	
+	var destinations = sourceMap.get(&apos;destinationSet&apos;);
+	var metadataIds = destinations.toArray();
+	
+	if (metadataIds.length == 0) {
+		return ResponseFactory.getErrorResponse(&apos;invalid request&apos;);
+	}
+	
+	var smsg = message.getConnectorMessages().get(0);
+	if (smsg.getStatus() == &apos;ERROR&apos;) {
+		if (smsg.getProcessingError()) {
+			return ResponseFactory.getErrorResponse(smsg.getProcessingError());
+		}
+		return ResponseFactory.getErrorResponse(smsg.getResponseData().getMessage());
+	}
+	
+	var metadataID = metadataIds[0];
+	var cmsg = message.getConnectorMessages().get(metadataID);
+
+	if (cmsg.getStatus() == &apos;ERROR&apos;) {
+		if (cmsg.getProcessingError()) {
+			return ResponseFactory.getErrorResponse(cmsg.getProcessingError());
+		}
+		return ResponseFactory.getErrorResponse(cmsg.getResponseData().getMessage());
+	} else if (cmsg.getStatus() == &apos;SENT&apos;) {
+		return ResponseFactory.getSentResponse(cmsg.getResponseData().getMessage());
+	} else if (cmsg.getStatus() == &apos;FILTERED&apos;) {
+		return ResponseFactory.getFilteredResponse(cmsg.getResponseData().getMessage());
+	} else if (cmsg.getStatus() == &apos;QUEUED&apos;) {
+		return ResponseFactory.getQueuedResponse(cmsg.getResponseData().getMessage());
+	} else if (cmsg.getStatus() == &apos;RECEIVED&apos;) {
+		return ResponseFactory.getSentResponse(cmsg.getResponseData().getMessage());
+	} else {
+		return cmsg;
+	}
+}</code>
+            </properties>
+          </codeTemplate>
+        </codeTemplates>
+      </codeTemplateLibrary>
+    </codeTemplateLibraries>
+  </exportData>
+</channel>
